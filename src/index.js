@@ -1,5 +1,7 @@
 class HashMap {
   constructor() {
+    this.loadfactor = 0.75;
+    this.capacity = 0;
     this.map = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
   }
 
@@ -34,6 +36,10 @@ class HashMap {
       const list = new LinkedList();
       list.prepend(key, value);
       b.push(list);
+      this.capacity = this.capacity + 1;
+      if (this.capacity > this.loadfactor * this.map.length) {
+        this.grow();
+      }
       return;
     }
     if (e.contains(key)) {
@@ -42,6 +48,10 @@ class HashMap {
       return;
     }
     e.append(key, value);
+    this.capacity = this.capacity + 1;
+    if (this.capacity > this.loadfactor * this.map.length) {
+      this.grow();
+    }
   }
 
   get(key) {
@@ -85,6 +95,7 @@ class HashMap {
 
   clear() {
     this.map = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+    this.capacity = 0;
   }
 
   keys() {
@@ -115,6 +126,19 @@ class HashMap {
       }
     }
     return all;
+  }
+
+  grow() {
+    let bigmap = new Array();
+    let all = this.entries();
+    this.capacity = 0;
+    for (let y = 0; y < this.map.length * 2; y++) {
+      bigmap.push([]);
+    }
+    this.map = bigmap;
+    for (let x = 0; x < all.length; x++) {
+      this.set(all[x][0], all[x][1]);
+    }
   }
 }
 
@@ -273,19 +297,22 @@ class Node {
   }
 }
 
-let newmap = new HashMap();
+let test = new HashMap();
 
-newmap.set("Sara", "Hello");
-newmap.set("raSa", "Goodbye");
-newmap.set("Sara", "Hi");
-newmap.set("Roma", "Dog");
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+console.log(test);
 
-console.log(newmap.get("Sara"));
-console.log(newmap.has("Sara"));
-// console.log(newmap.remove("Sara"));
-console.log(newmap.length());
-console.log(newmap.keys());
-console.log(newmap.values());
-console.log(newmap.entries());
+test.set("moon", "silver");
 
-console.log(newmap);
+console.log(test);
